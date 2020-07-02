@@ -57,4 +57,29 @@ normative:
 
 --- abstract
 
+This document describes a method for negotiating the disablement of encryption
+on 1-RTT packets, allowing for reduced CPU load and improved performance.
+
+--- middle
+
+# Introduction
+
 TODO
+
+# Conventions and Definitions
+
+{::boilerplate bcp14}
+
+This document uses terms and notational conventions from {{QUIC}}.
+
+# Disable 1-RTT Encryption Transport Parameter
+
+The disable_1rtt_encryption transport parameter can be sent by both a client and
+server.  The transport parameter is sent with an empty value; an endpoint that
+understands this transport parameter MUST treat the receipt of a non-empty value
+as a connection error of type TRANSPORT_PARAMETER_ERROR.
+
+Advertising the disable_1rtt_encryption transport parameter indicates that the
+endpoint wishes to disable encryption for 1-RTT packets.  Both sides must
+advertise support for the feature for it to be considered successfully
+negotiated.
