@@ -54,7 +54,6 @@ normative:
         org: sn3rd
         role: editor
 
-
 --- abstract
 
 This document describes a method for negotiating the disablement of encryption
@@ -64,13 +63,38 @@ on 1-RTT packets, allowing for reduced CPU load and improved performance.
 
 # Introduction
 
-TODO
+By default all QUIC connections are authenticated and secured, via a TLS
+handshake.  The handshake allows for the endpoints to be authenticated by a
+certificate and then securely generates shared secrets to encrypt the QUIC
+packet traffic.  Post-handshake, this packet enryption can occupy a considerable
+percentage of CPU usage, depending on the scenario.  Additionally, there are
+scenarios where the protections given by this encryption are either unnecessary
+or unwanted.  For these scenarios, this document defines an extension to the
+QUIC protocol to allow for mutually participating endpoints to negotiate the
+disablement of encryption for the 1-RTT packets sent after the handshake.
 
 # Conventions and Definitions
 
 {::boilerplate bcp14}
 
 This document uses terms and notational conventions from {{QUIC}}.
+
+# Applicable Scenarios for Use
+
+QUIC connections are generally meant to always be encrypted, to prevent
+unauthenticated middleboxes from reading or modifying the QUIC packets.  This is
+the desired behavior for most environments; especially any that go over the open
+internet.  There are two possible scenarios where disabling packet encryption
+makes sense:
+
+ - Performance Testing - When the actual contents of the QUIC packets are
+   unimportant and the goal is purely to measure the performance characteristics
+   of either the network, machine or QUIC implementation without encryption.
+
+ - Trusted Environment/Path - There are scenarios or environments where there is
+   no need for the additional security measures of QUIC encryption; such as
+   walled-gardens or tunneled connections.  These scenarios are either already
+   trusted or secured by other means.
 
 # Disable 1-RTT Encryption Transport Parameter
 
@@ -83,3 +107,68 @@ Advertising the disable_1rtt_encryption transport parameter indicates that the
 endpoint wishes to disable encryption for 1-RTT packets.  Both sides must
 advertise support for the feature for it to be considered successfully
 negotiated.
+
+If successfully negotiated, all packets that would normally be encrypted with
+the 1-RTT key are instead sent as cleartext; both header and packet protections
+are disabled.
+
+# Disabling 1-RTT Encryption
+
+When the extension is negotiated, all aspects of encryption on 1-RTT packets are
+removed:
+
+ - Header protection
+ - Payload protection
+ - AEAD tag
+
+This effectively gives the transport an additional 16 bytes per packet to be
+used for payload, since it is no longer including an AEAD tag.
+
+# Security Considerations
+
+Disabling encryption for 1-RTT packets has some fairly obvious security
+drawbacks:
+
+ - Packets can be read, modified and injected by any middleboxes
+
+This extension is not meant to be used for any practical application protocol on
+the open internet.  Internet facing servers SHOULD NOT enable this extension.
+Clients that do not trust their network and path to the server SHOULD NOT enable
+this extension.
+
+Because the AEAD tag is removed along with the encryption, the UDP checksum
+must be relied upon to determine any packet corruption.
+
+# IANA Considerations
+
+This document registers the disable_1rtt_encryption transport parameter in the
+"QUIC Transport Parameters" registry established in Section 22.2 of {{QUIC}}.
+The following fields are registered:
+
+Value:
+: 0xBAAD
+
+Parameter Name:
+: disable_1rtt_encryption
+
+Status:
+: Permanent
+
+Specification:
+: This document.
+
+Date:
+: Date of registration.
+
+Contact:
+: IETF QUIC Working Group (quic@ietf.org)
+
+Notes:
+: (none)
+
+--- back
+
+# Acknowledgments
+{:numbered="false"}
+
+TODO
