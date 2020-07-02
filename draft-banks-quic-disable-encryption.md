@@ -66,12 +66,13 @@ on 1-RTT packets, allowing for reduced CPU load and improved performance.
 By default all QUIC connections are authenticated and secured, via a TLS
 handshake.  The handshake allows for the endpoints to be authenticated by a
 certificate and then securely generates shared secrets to encrypt the QUIC
-packet traffic.  Post-handshake, this packet enryption can occupy a considerable
-percentage of CPU usage, depending on the scenario.  Additionally, there are
-scenarios where the protections given by this encryption are either unnecessary
-or unwanted.  For these scenarios, this document defines an extension to the
-QUIC protocol to allow for mutually participating endpoints to negotiate the
-disablement of encryption for the 1-RTT packets sent after the handshake.
+packet traffic.  Post-handshake, this packet encryption can occupy a
+considerable percentage of CPU usage, depending on the scenario.  Additionally,
+there are scenarios where the protections given by this encryption are either
+unnecessary or unwanted.  For these scenarios, this document defines an
+extension to the QUIC protocol to allow for mutually participating endpoints to
+negotiate the disablement of encryption for the 1-RTT packets sent after the
+handshake.
 
 # Conventions and Definitions
 
