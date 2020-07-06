@@ -133,8 +133,8 @@ drawbacks:
  - Packets can be read, modified and injected by any middleboxes
 
 This extension is not meant to be used for any practical application protocol on
-the open internet.  Internet facing servers SHOULD NOT enable this extension.
-Clients that do not trust their network and path to the server SHOULD NOT enable
+the open internet.  Internet facing servers MUST NOT enable this extension.
+Clients that do not trust their network and path to the server MUST NOT enable
 this extension.
 
 Because the AEAD tag is removed along with the encryption, the UDP checksum
