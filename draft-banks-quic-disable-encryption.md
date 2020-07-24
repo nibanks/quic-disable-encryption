@@ -128,6 +128,9 @@ removed:
 This effectively gives the transport an additional 16 bytes per packet to be
 used for payload, since it is no longer including an AEAD tag.
 
+Because the AEAD tag is removed along with the encryption, the UDP checksum
+must be relied upon to determine any packet corruption.
+
 # Interactions with Path Changes
 
 When making the trust determination about the path being, each endpoints must
@@ -151,9 +154,6 @@ This extension is not meant to be used for any practical application protocol on
 the open internet.  Internet facing servers MUST NOT enable this extension.
 Clients that do not trust their network and path to the server MUST NOT enable
 this extension.
-
-Because the AEAD tag is removed along with the encryption, the UDP checksum
-must be relied upon to determine any packet corruption.
 
 This extension does not modify the packet protections used during the handshake,
 so the handshake can still be securely authenticated.  This prevents scenarios
