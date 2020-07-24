@@ -57,7 +57,10 @@ normative:
 --- abstract
 
 This document describes a method for negotiating the disablement of encryption
-on 1-RTT packets, allowing for reduced CPU load and improved performance.
+on 1-RTT packets, allowing for reduced CPU load and improved performance.  This
+extension is only meant to be used in environments where both endpoints
+completely trust the path between themselves; not, for instance, on the open
+internet.
 
 --- middle
 
@@ -140,6 +143,12 @@ this extension.
 Because the AEAD tag is removed along with the encryption, the UDP checksum
 must be relied upon to determine any packet corruption.
 
+This extension does not modify the packet protections used during the handshake,
+so the handshake can still be securely authenticated.  This prevents scenarios
+where one endpoint might trust (or think it trusts) the path, but the other
+endpoint does not, and a man-in-the-middle tries to force this extension to be
+used.
+
 # IANA Considerations
 
 This document registers the disable_1rtt_encryption transport parameter in the
@@ -168,8 +177,3 @@ Notes:
 : (none)
 
 --- back
-
-# Acknowledgments
-{:numbered="false"}
-
-TODO
