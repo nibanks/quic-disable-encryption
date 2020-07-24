@@ -128,6 +128,18 @@ removed:
 This effectively gives the transport an additional 16 bytes per packet to be
 used for payload, since it is no longer including an AEAD tag.
 
+# Interactions with Path Changes
+
+When making the trust determination about the path being, each endpoints must
+take into account possible path changes; NAT rebinding for instance.  An
+endpoint MUST NOT enable enable this extension if it is possible for the path to
+change during the connection to some untrusted state.
+
+Additionally, a client MUST NOT try to migrate to any path that is untrusted
+if this extension is negotiated.  If a server receives a packet for a connection
+with this extension negotiated on an untrusted path, it MUST silently drop the
+packet.
+
 # Security Considerations
 
 Disabling encryption for 1-RTT packets has some fairly obvious security
