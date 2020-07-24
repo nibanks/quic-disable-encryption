@@ -91,14 +91,14 @@ the desired behavior for most environments; especially any that go over the open
 internet.  There are two possible scenarios where disabling packet encryption
 makes sense:
 
- - Performance Testing - When the actual contents of the QUIC packets are
-   unimportant and the goal is purely to measure the performance characteristics
-   of either the network, machine or QUIC implementation without encryption.
-
  - Trusted Environment/Path - There are scenarios or environments where there is
    no need for the additional security measures of QUIC encryption; such as
    walled-gardens or tunneled connections.  These scenarios are either already
    trusted or secured by other means.
+
+ - Performance Testing - When the actual contents of the QUIC packets are
+   unimportant and the goal is purely to measure the performance characteristics
+   of either the network, machine or QUIC implementation without encryption.
 
 # Disable 1-RTT Encryption Transport Parameter
 
