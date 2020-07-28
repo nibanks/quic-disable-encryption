@@ -103,9 +103,10 @@ makes sense:
 # Disable 1-RTT Encryption Transport Parameter
 
 The disable_1rtt_encryption transport parameter can be sent by both a client and
-server.  The transport parameter is sent with an empty value; an endpoint that
-understands this transport parameter MUST treat the receipt of a non-empty value
-as a connection error of type TRANSPORT_PARAMETER_ERROR.
+server.  The transport parameter is sent with an optional variable-length value
+by the client and an empty value by the server; a client that understands this
+transport parameter MUST treat the receipt of a non-empty value as a connection
+error of type TRANSPORT_PARAMETER_ERROR.
 
 Advertising the disable_1rtt_encryption transport parameter indicates that the
 endpoint wishes to disable encryption for 1-RTT packets.  Both sides must
@@ -115,6 +116,16 @@ negotiated.
 If successfully negotiated, all packets that would normally be encrypted with
 the 1-RTT key are instead sent as cleartext; both header and packet protections
 are disabled.
+
+# Negotiating the Extension
+
+The payload sent in the transport parameter by the client, along with any other
+information the server has about the client (such as IP address) may be used to
+negotiate the extension on the server side.  The TP payload could be considered
+a key or identifier used by the server to verify the client should be allowed to
+disable encryption.  These additional security measures are optional, but
+RECOMMENDED to ensure encryption is not accidentally enabled when it should not
+be.
 
 # Disabling 1-RTT Encryption
 
@@ -160,6 +171,10 @@ so the handshake can still be securely authenticated.  This prevents scenarios
 where one endpoint might trust (or think it trusts) the path, but the other
 endpoint does not, and a man-in-the-middle tries to force this extension to be
 used.
+
+To prevent accidental use of the feature on production systems it is
+RECOMMENDED for servers to have additional measures such as IP filtering or a
+security key.
 
 # IANA Considerations
 
